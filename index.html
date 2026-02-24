@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Microproject - Clustering</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #ffffff);
+        }
+
+        header {
+            background: #0d47a1;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .team {
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #0d47a1;
+        }
+
+        ul {
+            line-height: 1.6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #0d47a1;
+            color: white;
+            padding: 8px;
+        }
+
+        td {
+            padding: 6px;
+            text-align: center;
+        }
+
+        canvas {
+            margin-top: 15px;
+        }
+
+        footer {
+            background: #0d47a1;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .table-container {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Machine Learning Microproject</h1>
+    <p>Clustering Algorithms & Visualization</p>
+
+    <div class="team">
+        <strong>Team Members:</strong><br>
+        Ms: Arpita Jadhav |
+        Ms: Soundarya Kalavant |
+        Ms: Sanskruti Khune
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- WHAT IS CLUSTERING -->
+    <div class="card">
+        <h2>What is Clustering?</h2>
+        <p>
+            Clustering is an unsupervised Machine Learning technique used to group similar 
+            data points based on patterns or similarity without predefined labels.
+        </p>
+    </div>
+
+    <!-- DATASET -->
+    <div class="card">
+        <h2>Dataset Used</h2>
+        <p>
+            A synthetic dataset containing grouped data points and noise was generated 
+            to demonstrate clustering behavior.
+        </p>
+
+        <div class="table-container">
+            <table id="datasetTable">
+                <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>X Value</th>
+                        <th>Y Value</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- VISUALS -->
+    <div class="grid">
+
+        <div class="card">
+            <h2>K-Means Clustering</h2>
+            <p>K-Means partitions data into clusters using centroids.</p>
+            <canvas id="kmeansChart"></canvas>
+        </div>
+
+        <div class="card">
+            <h2>Hierarchical Clustering</h2>
+            <p>Hierarchical clustering builds nested clusters.</p>
+            <canvas id="hierarchicalChart"></canvas>
+        </div>
+
+        <div class="card">
+            <h2>DBSCAN Clustering</h2>
+            <p>DBSCAN groups dense points and detects noise.</p>
+            <canvas id="dbscanChart"></canvas>
+        </div>
+
+    </div>
+
+    <!-- ADVANTAGES -->
+    <div class="card">
+        <h2>Advantages of Clustering</h2>
+        <ul>
+            <li>Helps discover hidden patterns in data</li>
+            <li>No need for labelled dataset</li>
+            <li>Useful for exploratory data analysis</li>
+            <li>Supports decision making and segmentation</li>
+        </ul>
+    </div>
+
+    <!-- DISADVANTAGES -->
+    <div class="card">
+        <h2>Disadvantages of Clustering</h2>
+        <ul>
+            <li>Choosing correct number of clusters can be difficult</li>
+            <li>Sensitive to noise and outliers</li>
+            <li>Results may vary with different algorithms</li>
+            <li>Requires proper feature scaling</li>
+        </ul>
+    </div>
+
+    <!-- APPLICATIONS -->
+    <div class="card">
+        <h2>Applications of Clustering</h2>
+        <ul>
+            <li>Customer segmentation</li>
+            <li>Market analysis</li>
+            <li>Image segmentation</li>
+            <li>Recommendation systems</li>
+            <li>Anomaly detection</li>
+        </ul>
+    </div>
+
+    <!-- REAL WORLD APPLICATIONS -->
+    <div class="card">
+        <h2>Real-World Applications</h2>
+        <ul>
+            <li><b>E-Commerce:</b> Grouping customers by purchasing behaviour</li>
+            <li><b>Healthcare:</b> Identifying patient groups with similar symptoms</li>
+            <li><b>Banking:</b> Fraud detection using anomaly clusters</li>
+            <li><b>Social Media:</b> User behaviour and interest grouping</li>
+            <li><b>Urban Planning:</b> Traffic pattern analysis</li>
+        </ul>
+    </div>
+
+    <!-- CONCLUSION -->
+    <div class="card">
+        <h2>Conclusion</h2>
+        <p>
+            Clustering is a powerful unsupervised learning technique that helps analyse 
+            datasets by grouping similar data points. Different algorithms such as 
+            K-Means, Hierarchical, and DBSCAN provide flexible solutions depending on 
+            data structure and application needs.
+        </p>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 ML Microproject | Clustering Techniques
+</footer>
+
+<script>
+    function generateCluster(cx, cy, spread, count) {
+        let arr = [];
+        for (let i = 0; i < count; i++) {
+            arr.push({
+                x: (cx + Math.random() * spread).toFixed(2),
+                y: (cy + Math.random() * spread).toFixed(2)
+            });
+        }
+        return arr;
+    }
+
+    const clusterA = generateCluster(5, 5, 3, 40);
+    const clusterB = generateCluster(15, 10, 3, 40);
+    const noise = [{x:25, y:2}, {x:28, y:4}, {x:22, y:1}];
+
+    const dataset = [...clusterA, ...clusterB, ...noise];
+
+    const tableBody = document.querySelector("#datasetTable tbody");
+
+    dataset.forEach((point, index) => {
+        tableBody.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${point.x}</td>
+                <td>${point.y}</td>
+            </tr>`;
+    });
+
+    new Chart(document.getElementById("kmeansChart"), {
+        type: 'scatter',
+        data: {
+            datasets: [
+                { label: "Cluster 1", data: clusterA, backgroundColor: "blue" },
+                { label: "Cluster 2", data: clusterB, backgroundColor: "green" }
+            ]
+        }
+    });
+
+    new Chart(document.getElementById("hierarchicalChart"), {
+        type: 'scatter',
+        data: {
+            datasets: [
+                { label: "Group A", data: clusterA, backgroundColor: "purple" },
+                { label: "Group B", data: clusterB, backgroundColor: "orange" }
+            ]
+        }
+    });
+
+    new Chart(document.getElementById("dbscanChart"), {
+        type: 'scatter',
+        data: {
+            datasets: [
+                { label: "Dense Points", data: [...clusterA, ...clusterB], backgroundColor: "teal" },
+                { label: "Noise", data: noise, backgroundColor: "red" }
+            ]
+        }
+    });
+</script>
+
+</body>
+</html>
